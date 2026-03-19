@@ -179,6 +179,28 @@ internals.registerRoutes = (server) => {
                 },
             },
         },
+        {
+            method: 'GET',
+            path: '/checkout-js/{path*}',
+            handler: {
+                proxy: {
+                    mapUri: (req) => {
+                        const uri = `http://127.0.0.1:8080/${req.params.path}`;
+                        return {
+                            uri,
+                            headers: req.headers,
+                        };
+                    },
+                    passThrough: true,
+                },
+            },
+            options: {
+                cors: true,
+                state: {
+                    failAction: 'log',
+                },
+            },
+        },
     ]);
 };
 export const name = 'Router';
